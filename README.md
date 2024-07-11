@@ -10,3 +10,7 @@ On the github page, go to releases and download the latest `SPETSpy_version.exe`
 Clone this repository and navigate to src folder. Run this command:
 `py -m SPETS "path\to\obj.obj" compartmentname --asvehicle "faction.vehicle"`
 
+## Todo
+ - Implement quads with custom .obj file reader
+ - Implement exporting
+ - Implement face coloring
