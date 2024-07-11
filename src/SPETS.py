@@ -5,26 +5,71 @@ import blueprint.out as out
 import mesh.objhandler as objhandler
 
 import typer
+import json
 
 app = typer.Typer()
 
 @app.command()
-def importer(pathToObj: str, asVehicle: str = ""):
+def importer(objpath: str, compartment: str, asVehicle: str = ""):
     """
     Import .obj file as sprocket compartment or into vehicle if --asVehicle is specified
 
     if --asVehicle is specified, then put faction and vehicle in the format "Faction.Vehicle", including quotes
     """
-    FACTIONSFOLDER = filehandler.get_factions_folder()
-    FACTIONS = filehandler.get_factions(FACTIONSFOLDER)
+    # TODO: implement compartment-only generation
+    if asVehicle != "":
+        factionsFolder = filehandler.get_factions_folder()
+        factions = filehandler.get_factions(factionsFolder)
 
-    print(asVehicle)
+        faction, vehicle = asVehicle.split(".")
 
-    faction = None
-    while faction not in FACTIONS:
-        faction = input("Faction: ")
-        if faction not in FACTIONS:
-            print("Faction not found, please choose from " + str(FACTIONS))
+        if faction not in factions:
+            err = 1
+            return ("Faction not found, please choose from " + str(factions) + f". Aborting with error code {err}.", err)
+        
+        vehiclesFolder = filehandler.get_vehicles_folder(factionsFolder, faction)
+        vehicles = filehandler.get_vehicles(vehiclesFolder)
+        print(vehiclesFolder)
+
+        if vehicle not in vehicle:
+            err = 2
+            return ("Vehicle not found, please choose from " + str(vehicles) + f". Aborting with error code {err}.", err)
+        
+        scene = objhandler.create_scene(objpath)
+        vertices = objhandler.populate_vertices(scene)
+        faces = objhandler.populate_faces(scene)
+
+        # TODO: Properly get full vehicle path
+        vData = filehandler.load_bp_as_dict(vehiclesFolder + "/" + vehicle + ".blueprint")
+
+        vertices, faces = objhandler.merge_duplicate_points(vertices, faces)
+
+        vertices = out.reformat_vertices(vertices)
+        faces = out.reformat_faces(faces)
+
+        vuid = bphandler.get_vuid(vData, compartment)
+
+        template = out.fill_template(vuid, vertices, faces)[0]
+
+        cData = {
+            'meshes': [template]
+        }
+
+        found = False
+        for mesh in vData['meshes']:
+            if mesh['vuid'] == vuid:
+                mesh['meshData']['mesh'] = cData['meshes'][0]['meshData']['mesh']
+                found = True
+                
+        if not found:
+            err = 3
+            return (f"Compartment {compartment} not found. Aborting with error code {err}.", err)
+        
+        with open(vehiclesFolder + '/' + vehicle + '.blueprint', 'w') as vFile:
+            json.dump(vData, vFile)
+            vFile.close()
+
+        return ("Completed", 0)
 
 if __name__ == "__main__":
-    app()
+    print(app()[0])

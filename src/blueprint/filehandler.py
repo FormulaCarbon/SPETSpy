@@ -3,7 +3,7 @@ import getpass
 import os
 import json
 
-def load_bp(filepath: str) -> spl.base.BluePrint:
+def load_bp(filepath: str):
     """
     Convert .blueprint file into sprocketlib.base.BluePrint object
     """
