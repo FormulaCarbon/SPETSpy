@@ -14,6 +14,21 @@ def create_scene(filepath: str) -> pwf.Wavefront:
 
     return scene
 
+def load_shape_from_obj(self, data):
+    vertices = []
+    faces = []
+    for line in data:
+        if line[0] == "v":
+            vertex = list(map(float, line[2:].strip().split()))
+            vertices.append(vertex)
+        elif line[0] == "f":
+            face = list(map(int, line[2:].strip().split()))
+            faces.append(face)
+
+    shape_data = {"vertices": vertices, "faces": faces}
+
+    return shape_data
+
 def populate_vertices(scene: pwf.Wavefront) -> list:
     """
     Create a list of sprocketlib.mesh.Vertex objects
@@ -26,6 +41,18 @@ def populate_vertices(scene: pwf.Wavefront) -> list:
     
     return vertices
 
+def populate_vertices_alt(scene) -> list:
+    """
+    Create a list of sprocketlib.mesh.Vertex objects
+    """
+    vertices = []
+    index = 0
+    for i in scene["vertices"]:
+        vertices.append(spl.mesh.Vertex( i[0] , i[1] ,  i[2] , _id = index))
+        index += 1
+    
+    return vertices
+
 def populate_faces(scene: pwf.Wavefront, thickness = 1) -> list:
     """
     Create a list of sprocketlib.mesh.Face_IDOnly objects
@@ -33,6 +60,17 @@ def populate_faces(scene: pwf.Wavefront, thickness = 1) -> list:
     # TODO: Switch from Face_IDOnly to Face objects
     faces = []
     for i in scene.mesh_list[0].faces:
+        faces.append(spl.mesh.Face_IDOnly(i[0], i[1], i[2], thickness=thickness))
+    
+    return faces
+
+def populate_faces_alt(scene, thickness = 1) -> list:
+    """
+    Create a list of sprocketlib.mesh.Face_IDOnly objects
+    """
+    # TODO: Switch from Face_IDOnly to Face objects
+    faces = []
+    for i in scene["faces"]:
         faces.append(spl.mesh.Face_IDOnly(i[0], i[1], i[2], thickness=thickness))
     
     return faces

@@ -6,9 +6,9 @@ import mesh.objhandler as objhandler
 
 import json
 
-def importer(objpath: str, compartment: str, asVehicle: str = "", thickness = 1) -> str:
+def importer(obj: str, compartment: str, asVehicle: str = "", thickness = 1) -> str:
     """
-    Import .obj file as sprocket compartment or into vehicle if asVehicle is specified
+    Import .obj string as sprocket compartment or into vehicle if asVehicle is specified
 
     asVehicle should be a string containing data of the file.
     """
@@ -16,9 +16,9 @@ def importer(objpath: str, compartment: str, asVehicle: str = "", thickness = 1)
     if asVehicle != "":
         vData = json.loads(asVehicle)
         
-        scene = objhandler.create_scene(objpath)
-        vertices = objhandler.populate_vertices(scene)
-        faces = objhandler.populate_faces(scene, thickness=thickness)
+        scene = objhandler.load_shape_from_obj(obj)
+        vertices = objhandler.populate_vertices_alt(scene)
+        faces = objhandler.populate_faces_alt(scene, thickness=thickness)
 
         vertices, faces = objhandler.merge_duplicate_points(vertices, faces)
 
