@@ -26,14 +26,14 @@ def populate_vertices(scene: pwf.Wavefront) -> list:
     
     return vertices
 
-def populate_faces(scene: pwf.Wavefront) -> list:
+def populate_faces(scene: pwf.Wavefront, thickness = 1) -> list:
     """
     Create a list of sprocketlib.mesh.Face_IDOnly objects
     """
     # TODO: Switch from Face_IDOnly to Face objects
     faces = []
     for i in scene.mesh_list[0].faces:
-        faces.append(spl.mesh.Face_IDOnly(i[0], i[1], i[2]))
+        faces.append(spl.mesh.Face_IDOnly(i[0], i[1], i[2], thickness=thickness))
     
     return faces
 
