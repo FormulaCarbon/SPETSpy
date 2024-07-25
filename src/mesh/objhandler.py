@@ -14,11 +14,31 @@ def create_scene(filepath: str) -> pwf.Wavefront:
 
     return scene
 
-def load_shape_from_obj(self, data):
+def load_shape_from_obj(data, raw = True):
+    if not raw:
+        vertices = []
+        faces = []
+        with open(data) as f:
+            for line in f:
+                if line[0:2] == "v ":
+                    vertex = list(map(float, line[2:].strip().split()))
+                    vertices.append(vertex)
+                elif line[0] == "f":
+                    face = []
+                    for i in line[2:].strip().split():
+                        face.append(int(i.split('/')[0]))
+                    for i in range(len(face)):
+                        face[i] = face[i] - 1
+
+                    faces.append(face)
+
+        shape_data = {"vertices": vertices, "faces": faces}
+
+        return shape_data
     vertices = []
     faces = []
     for line in data:
-        if line[0] == "v":
+        if line[0:2] == "v ":
             vertex = list(map(float, line[2:].strip().split()))
             vertices.append(vertex)
         elif line[0] == "f":
@@ -48,6 +68,7 @@ def populate_vertices_alt(scene) -> list:
     vertices = []
     index = 0
     for i in scene["vertices"]:
+        print(i)
         vertices.append(spl.mesh.Vertex( i[0] , i[1] ,  i[2] , _id = index))
         index += 1
     
@@ -71,7 +92,10 @@ def populate_faces_alt(scene, thickness = 1) -> list:
     # TODO: Switch from Face_IDOnly to Face objects
     faces = []
     for i in scene["faces"]:
-        faces.append(spl.mesh.Face_IDOnly(i[0], i[1], i[2], thickness=thickness))
+        try:
+            faces.append(spl.mesh.Face_IDOnly(i[0], i[1], i[2], id4 = i[3], thickness=thickness))
+        except IndexError:
+            faces.append(spl.mesh.Face_IDOnly(i[0], i[1], i[2], thickness=thickness))
     
     return faces
 

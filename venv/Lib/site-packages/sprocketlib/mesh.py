@@ -30,9 +30,13 @@ class Face:
         return str(out)
 
 class Face_IDOnly:
-    def __init__(self, id1, id2, id3, thickness = 1):
-        self.vertex_ids = [id1, id2, id3]
-        self.thickness = [thickness, thickness, thickness]
+    def __init__(self, id1, id2, id3, id4 = None, thickness = 1):
+        if id4 is None:
+            self.vertex_ids = [id1, id2, id3]
+            self.thickness = [thickness, thickness, thickness]
+        else:
+            self.vertex_ids = [id1, id2, id3, id4]
+            self.thickness = [thickness, thickness, thickness, thickness]
     
     def jsonify(self) -> str:
         v = copy.deepcopy(self.vertex_ids)
