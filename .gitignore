@@ -4,3 +4,4 @@ build/
 venv/
 dist/
 terminalrunner.spec
+test.py

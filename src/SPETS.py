@@ -24,7 +24,7 @@ def importer(objpath: str, compartment: str, asVehicle: str = "" ):
         if not os.path.exists(factionsFolder):
             err = 4
             print("Faction folder not found at " + factionsFolder + f". Please enter path below.")
-            factionsFolder = input("Factions folder: ")
+            factionsFolder = input(" Folder containing Factions: ")
         factions = filehandler.get_factions(factionsFolder)
 
         faction, vehicle = asVehicle.split(".")
@@ -51,7 +51,7 @@ def importer(objpath: str, compartment: str, asVehicle: str = "" ):
         # TODO: Properly get full vehicle path
         vData = filehandler.load_bp_as_dict(vehiclesFolder + "/" + vehicle + ".blueprint")
 
-        #vertices, faces = objhandler.merge_duplicate_points(vertices, faces)
+        vertices, faces = objhandler.merge_duplicate_points(vertices, faces)
 
         vertices = out.reformat_vertices(vertices)
         faces = out.reformat_faces(faces)
