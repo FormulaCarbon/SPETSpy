@@ -56,8 +56,8 @@ def importer(objpath: str, compartment: str, asVehicle: str = "" ):
         vertices = out.reformat_vertices(vertices)
         faces = out.reformat_faces(faces)
 
-        print(vertices)
-        print(faces)
+        #print(vertices)
+        #print(faces)
 
         vuid = bphandler.get_vuid(vData, compartment)
 
@@ -84,4 +84,4 @@ def importer(objpath: str, compartment: str, asVehicle: str = "" ):
         return ("Completed", 0)
 
 if __name__ == "__main__":
-    print(app()[0])
+    app()

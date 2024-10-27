@@ -69,9 +69,10 @@ def populate_vertices_alt(scene) -> list:
     index = 0
     for i in scene["vertices"]:
         print(i)
-        vertices.append(spl.mesh.Vertex( i[0] , i[1] ,  i[2] , _id = index))
+        vertices.append(spl.mesh.Vertex( -i[0] , i[1] ,  i[2] , _id = index))
         index += 1
     
+    print(len(vertices))
     return vertices
 
 def populate_faces(scene: pwf.Wavefront, thickness = 1) -> list:
@@ -120,8 +121,10 @@ def merge_duplicate_points(v: list, f: list) -> tuple:
 
                     if face.vertex_ids[2] == vert2.id:
                         face.vertex_ids[2] = vert1.id
+                    
 
                 ignore.append(vert1)
+    
     
     # TODO: Remove duplicate points. For some reason, removing points that lack any faces referencing them makes Sprocket freeze
 
