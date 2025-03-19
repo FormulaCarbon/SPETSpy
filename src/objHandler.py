@@ -1,5 +1,4 @@
 #   Handle parsing of .obj files
-
 def parse_obj(file_path: str) -> tuple:
     vertices = []
     faces = []
@@ -18,6 +17,7 @@ def parse_obj(file_path: str) -> tuple:
     
     return (vertices, faces)
 
+#   Generate edges
 def generate_edges(faces: list) -> list:
     edges = []
 
@@ -28,6 +28,7 @@ def generate_edges(faces: list) -> list:
 
     return edges
 
+#   Delete edge duplicates caused by generate_edges()
 def delete_duplicate_edges(edges: list) -> list:
     cleanedEdges = []
     for edge in edges:
