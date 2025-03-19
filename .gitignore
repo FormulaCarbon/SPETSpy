@@ -5,3 +5,4 @@ venv/
 dist/
 terminalrunner.spec
 test.py
+src/test.blueprint

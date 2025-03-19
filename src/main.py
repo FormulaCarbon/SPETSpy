@@ -1,7 +1,7 @@
-import src.objHandler as objHandler
-import src.bpHandler as bpHandler
+import objHandler as objHandler
+import bpHandler as bpHandler
 
-v, f = objHandler.parse_obj("")
+v, f = objHandler.parse_obj(input("Path to .obj file: "))
 e = objHandler.generate_edges(f)
 
 f = bpHandler.generate_face_info(f)
@@ -12,4 +12,8 @@ v = bpHandler.combine_all(v)
 e = bpHandler.combine_all(e)
 
 bp = bpHandler.fill_compartment_template("test", v, e, ef, f)
+
+with open("test.blueprint", 'w') as file:
+    file.write(bp)
+    file.close()
 print(bp)
