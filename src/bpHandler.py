@@ -13,7 +13,9 @@ def generate_face_info(faces: list, thickness = 5) -> dict:
     faceDicts = []
     dictTemplate = {
         "v" : None,
-        "t" : None
+        "t" : None,
+        "tm": 0,
+        "te": 0
     }
 
     for face in faces:
