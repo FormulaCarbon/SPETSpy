@@ -17,6 +17,17 @@ def parse_obj(file_path: str) -> tuple:
     
     return (vertices, faces)
 
+def correct_edge_ids(faces: list) -> list:
+    out = []
+    for face in faces:
+        tmp = []
+        for i in face:
+            tmp.append(i - 1)
+        out.append(tmp)
+    return out
+
+
+
 #   Generate edges
 def generate_edges(faces: list) -> list:
     edges = []

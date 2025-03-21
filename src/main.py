@@ -13,6 +13,7 @@ while faction not in factions:
     faction = input("Enter faction: ")
 
 v, f = objHandler.parse_obj(input("Path to .obj file: "))
+f = objHandler.correct_edge_ids(f)
 e = objHandler.generate_edges(f)
 
 f = bpHandler.generate_face_info(f)
