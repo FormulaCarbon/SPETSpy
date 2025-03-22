@@ -6,3 +6,7 @@ dist/
 terminalrunner.spec
 test.py
 src/test.blueprint
+src/guiTest.py
+testCompartment.blueprint
+testObj.obj
+testPlane.obj

@@ -27,7 +27,7 @@ def generate_face_info(faces: list, thickness = 5) -> dict:
         #temp["te"] = calculate_te(face)
         faceDicts.append(temp)
         
-    print(faceDicts)
+    #print(faceDicts)
     
     return faceDicts
 
